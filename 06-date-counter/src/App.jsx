@@ -1,4 +1,4 @@
-// import { useState } from "react";
+import { useState } from "react";
 import "./App.css";
 
 export default function App() {
@@ -10,18 +10,40 @@ export default function App() {
 }
 
 function Counter() {
+  const [count, setCount] = useState(0);
+  const [step, setStep] = useState(1);
+
+  const date = new Date();
+  date.setDate(date.getDate() + count);
+
+  let optDate = date.toDateString();
+
+  function handlePreviousStep() {
+    if (step > 1) setStep((s) => s - 1);
+  }
+
+  function handleNextStep() {
+    if (step < 10) setStep((s) => s + 1);
+  }
+
   return (
     <>
       <div className="step">
-        <button>-</button>
-        <span>Step: </span>
-        <button>+</button>
+        <button onClick={handlePreviousStep}>-</button>
+        <span>Step: {step}</span>
+        <button onClick={handleNextStep}>+</button>
       </div>
       <div className="count">
-        <button>-</button>
-        <span>Count: </span>
-        <button>+</button>
+        <button onClick={() => setCount((c) => c - step)}>-</button>
+        <span>Count: {count}</span>
+        <button onClick={() => setCount((c) => c + step)}>+</button>
       </div>
+
+      <p className="date">
+        {count < 0 && `${-count} days ago was ${optDate}`}
+        {count === 0 && `Today is ${optDate}`}
+        {count > 0 && `${count} days from today is ${optDate}`}
+      </p>
     </>
   );
 }
